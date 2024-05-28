@@ -24,7 +24,8 @@ pub fn instantiate(
     _info: MessageInfo,
     _msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
-    unimplemented!()
+    let res = Response::new().add_attribute("action", "instantiate");
+    Ok(res)
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -46,7 +47,7 @@ pub fn execute(
 pub fn execute_change_led_hash(
     deps: DepsMut,
     _env: Env,
-    info: MessageInfo,
+    _info: MessageInfo,
     hash: Vec<u32>,
 ) -> Result<Response, ContractError> {
     let mut cfg = HASH_LIST.load(deps.storage)?;
@@ -59,7 +60,7 @@ pub fn execute_change_led_hash(
 pub fn execute_reset_leds(
     deps: DepsMut,
     _env: Env,
-    info: MessageInfo,
+    _info: MessageInfo,
 ) -> Result<Response, ContractError> {
     let mut cfg = HASH_LIST.load(deps.storage)?;
     cfg.hashes.clear();

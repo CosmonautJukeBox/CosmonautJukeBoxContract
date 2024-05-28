@@ -4,6 +4,7 @@ use cosmwasm_schema::{cw_serde, QueryResponses};
 pub struct InstantiateMsg {}
 
 #[cw_serde]
+#[derive(cw_orch::ExecuteFns)]
 pub enum ExecuteMsg {
     #[serde(rename = "change_leds")]
     ChangeLEDs { red: u8, green: u8,blue: u8 },
@@ -16,6 +17,7 @@ pub enum ExecuteMsg {
 
 #[cw_serde]
 #[derive(QueryResponses)]
+#[derive(cw_orch::QueryFns)]
 pub enum QueryMsg {
     #[returns(LEDResponse)]
     #[serde(rename = "get_leds")]
