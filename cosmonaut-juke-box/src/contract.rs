@@ -37,7 +37,7 @@ pub fn execute(
     match msg {
         ExecuteMsg::ChangeLEDs { red, green,blue } => unimplemented!(),
         ExecuteMsg::ChangeLEDHash { hash } => execute_change_led_hash(deps, env, info, hash),
-        ExecuteMsg::ResetLEDs => unimplemented!(),
+        ExecuteMsg::ResetLEDs => execute_reset_leds(deps, env, info),
         ExecuteMsg::PlaySound { index } => unimplemented!()
     }
 
@@ -51,9 +51,20 @@ pub fn execute_change_led_hash(
 ) -> Result<Response, ContractError> {
     let mut cfg = HASH_LIST.load(deps.storage)?;
     cfg.hashes=hash;
-
-
+    HASH_LIST.save(deps.storage, &cfg)?;
     let res = Response::new().add_attribute("action", "change_led_hash");
+    Ok(res)
+}
+
+pub fn execute_reset_leds(
+    deps: DepsMut,
+    _env: Env,
+    info: MessageInfo,
+) -> Result<Response, ContractError> {
+    let mut cfg = HASH_LIST.load(deps.storage)?;
+    cfg.hashes.clear();
+    HASH_LIST.save(deps.storage, &cfg)?;
+    let res = Response::new().add_attribute("action", "reset_leds");
     Ok(res)
 }
 
@@ -74,4 +85,74 @@ pub fn query_hash_list(deps: Deps) -> StdResult<HashListResponse> {
 
 
 #[cfg(test)]
-mod tests {}
+mod tests {
+
+    use super::*;
+    use cosmwasm_std::testing::{mock_dependencies, mock_env, mock_info};
+    use cosmwasm_std::StdError;
+    use crate::msg::HashListResponse;
+    use crate::state::HashList;
+
+    #[test]
+    fn test_query_hash_list() {
+        let mut deps = mock_dependencies();
+
+        let hash_list = HashList {
+            hashes: vec![1, 2, 3, 4, 5],
+        };
+        HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
+
+        let res = query_hash_list(deps.as_ref()).unwrap();
+        assert_eq!(res, HashListResponse {
+            hashes: vec![1, 2, 3, 4, 5],
+        });
+    }
+
+    #[test]
+    fn test_execute_change_led_hash() {
+        let mut deps = mock_dependencies();
+
+        let hash_list = HashList {
+            hashes: vec![1, 2, 3, 4, 5],
+        };
+        HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
+
+        let info = mock_info("creator", &[]);
+        let hash = vec![1, 2, 3, 4, 5, 6];
+        let msg = ExecuteMsg::ChangeLEDHash { hash: hash.clone() };
+        let res = execute_change_led_hash(deps.as_mut(), mock_env(), info, hash).unwrap();
+        assert_eq!(res.attributes.len(), 1);
+        assert_eq!(res.attributes[0].key, "action");
+        assert_eq!(res.attributes[0].value, "change_led_hash");
+
+        let hash_list = HashList {
+            hashes: vec![1, 2, 3, 4, 5, 6],
+        };
+        let res = HASH_LIST.load(deps.as_ref().storage).unwrap();
+        assert_eq!(res, hash_list);
+    }
+
+    #[test]
+    fn test_execute_reset_leds() {
+        let mut deps = mock_dependencies();
+
+        let hash_list = HashList {
+            hashes: vec![1, 2, 3, 4, 5],
+        };
+        HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
+
+        let info = mock_info("creator", &[]);
+        let msg = ExecuteMsg::ResetLEDs {};
+        let res = execute_reset_leds(deps.as_mut(), mock_env(), info).unwrap();
+        assert_eq!(res.attributes.len(), 1);
+        assert_eq!(res.attributes[0].key, "action");
+        assert_eq!(res.attributes[0].value, "reset_leds");
+
+        let hash_list = HashList {
+            hashes: vec![],
+        };
+        let res = HASH_LIST.load(deps.as_ref().storage).unwrap();
+        assert_eq!(res, hash_list);
+    }
+
+}
