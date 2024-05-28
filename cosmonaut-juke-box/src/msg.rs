@@ -19,8 +19,12 @@ pub enum ExecuteMsg {
 pub enum QueryMsg {
     #[returns(LEDResponse)]
     #[serde(rename = "get_leds")]
-    GetLEDs {}
+    GetLEDs {},
+    #[returns(HashListResponse)]
+    #[serde(rename = "get_hash_list")]
+    GetHashList {}
 }
+
 
 #[cw_serde]
 #[serde(rename = "led_response")]
@@ -28,4 +32,10 @@ pub struct LEDResponse {
     pub red: u8,
     pub green: u8,
     pub blue: u8
+}
+
+#[cw_serde]
+#[serde(rename = "hash_list_response")]
+pub struct HashListResponse {
+    pub hashes: Vec<u32>
 }
