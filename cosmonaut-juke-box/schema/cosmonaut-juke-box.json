@@ -56,6 +56,32 @@
       {
         "type": "object",
         "required": [
+          "change_led_hash"
+        ],
+        "properties": {
+          "change_led_hash": {
+            "type": "object",
+            "required": [
+              "hash"
+            ],
+            "properties": {
+              "hash": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "uint32",
+                  "minimum": 0.0
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "required": [
           "play_sound"
         ],
         "properties": {

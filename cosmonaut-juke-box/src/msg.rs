@@ -7,6 +7,8 @@ pub struct InstantiateMsg {}
 pub enum ExecuteMsg {
     #[serde(rename = "change_leds")]
     ChangeLEDs { red: u8, green: u8,blue: u8 },
+    #[serde(rename = "change_led_hash")]
+    ChangeLEDHash { hash: Vec<u32>},
     #[serde(rename = "reset_leds")]
     ResetLEDs,
     PlaySound { index: usize }
