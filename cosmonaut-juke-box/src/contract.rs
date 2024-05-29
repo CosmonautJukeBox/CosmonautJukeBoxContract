@@ -41,7 +41,8 @@ pub fn execute(
 ) -> Result<Response, ContractError> {
     match msg {
         ExecuteMsg::AddLEDHash { hash } => execute_add_led_hash(deps, env, info, hash),
-        ExecuteMsg::ClearQueue => execute_clear_queue(deps, env, info)
+        ExecuteMsg::ClearQueue => execute_clear_queue(deps, env, info),
+        ExecuteMsg::RemoveHash => execute_remove_hash(deps, env, info)
     }
 
 }
@@ -75,6 +76,18 @@ pub fn execute_clear_queue(
     cfg.hashes.clear();
     HASH_LIST.save(deps.storage, &cfg)?;
     let res = Response::new().add_attribute("action", "clear_queue");
+    Ok(res)
+}
+
+pub fn execute_remove_hash(
+    deps: DepsMut,
+    _env: Env,
+    _info: MessageInfo,
+) -> Result<Response, ContractError> {
+    let mut cfg = HASH_LIST.load(deps.storage)?;
+    cfg.hashes.remove(0);
+    HASH_LIST.save(deps.storage, &cfg)?;
+    let res = Response::new().add_attribute("action", "remove_hash");
     Ok(res)
 }
 
@@ -158,6 +171,29 @@ mod tests {
 
         let hash_list = HashList {
             hashes: vec![],
+        };
+        let res = HASH_LIST.load(deps.as_ref().storage).unwrap();
+        assert_eq!(res, hash_list);
+    }
+
+    #[test]
+    fn test_execute_remove_hash() {
+        let mut deps = mock_dependencies();
+
+        let hash_list = HashList {
+            hashes: vec![1, 2, 3, 4, 5],
+        };
+        HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
+
+        let info = mock_info("creator", &[]);
+
+        let res = execute_remove_hash(deps.as_mut(), mock_env(), info).unwrap();
+        assert_eq!(res.attributes.len(), 1);
+        assert_eq!(res.attributes[0].key, "action");
+        assert_eq!(res.attributes[0].value, "remove_hash");
+
+        let hash_list = HashList {
+            hashes: vec![2, 3, 4, 5],
         };
         let res = HASH_LIST.load(deps.as_ref().storage).unwrap();
         assert_eq!(res, hash_list);

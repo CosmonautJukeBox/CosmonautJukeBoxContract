@@ -8,6 +8,8 @@ pub struct InstantiateMsg {}
 pub enum ExecuteMsg {
     #[serde(rename = "add_led_hash")]
     AddLEDHash { hash: u32 },
+    #[serde(rename = "remove_hash")]
+    RemoveHash,
     #[serde(rename = "clear_queue")]
     ClearQueue
 }

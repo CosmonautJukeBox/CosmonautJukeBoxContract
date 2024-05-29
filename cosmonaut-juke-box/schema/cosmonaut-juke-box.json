@@ -15,6 +15,7 @@
       {
         "type": "string",
         "enum": [
+          "remove_hash",
           "clear_queue"
         ]
       },
