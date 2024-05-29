@@ -8,7 +8,6 @@ pub enum ContractError {
 
     #[error("Unauthorized")]
     Unauthorized {},
-
-//    #[error("Payment error: {0}")]
-//    Payment(#[from] PaymentError),
+    //    #[error("Payment error: {0}")]
+    //    Payment(#[from] PaymentError),
 }

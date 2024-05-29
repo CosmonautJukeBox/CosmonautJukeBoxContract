@@ -21,8 +21,7 @@ impl<Chain> Uploadable for CosmonautContract<Chain> {
                 crate::contract::execute,
                 crate::contract::instantiate,
                 crate::contract::query,
-            )
-                //.with_migrate(crate::contract::migrate),
+            ), //.with_migrate(crate::contract::migrate),
         )
     }
 }

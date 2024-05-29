@@ -11,20 +11,19 @@ pub enum ExecuteMsg {
     #[serde(rename = "remove_hash")]
     RemoveHash,
     #[serde(rename = "clear_queue")]
-    ClearQueue
+    ClearQueue,
 }
 
 #[cw_serde]
-#[derive(QueryResponses)]
-#[derive(cw_orch::QueryFns)]
+#[derive(QueryResponses, cw_orch::QueryFns)]
 pub enum QueryMsg {
     #[returns(HashListResponse)]
     #[serde(rename = "get_hash_list")]
-    GetHashList {}
+    GetHashList,
 }
 
 #[cw_serde]
 #[serde(rename = "hash_list_response")]
 pub struct HashListResponse {
-    pub hashes: Vec<u32>
+    pub hashes: Vec<u32>,
 }

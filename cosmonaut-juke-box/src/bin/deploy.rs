@@ -1,9 +1,8 @@
-
 use cosmonaut_juke_box::{
-    msg::InstantiateMsg, interface::CosmonautContract, CosmonautExecuteMsgFns, CosmonautQueryMsgFns,
+    interface::CosmonautContract, msg::InstantiateMsg, CosmonautExecuteMsgFns, CosmonautQueryMsgFns,
 };
-use cw_orch::{anyhow, prelude::*};
 use cw_orch::environment::{ChainKind, NetworkInfo};
+use cw_orch::{anyhow, prelude::*};
 
 pub const NEUTRON_NETWORK: NetworkInfo = NetworkInfo {
     chain_name: "neutron",
@@ -43,5 +42,4 @@ pub fn main() -> anyhow::Result<()> {
     contract.instantiate(&InstantiateMsg {}, None, None)?;
 
     Ok(())
-
 }

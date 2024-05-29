@@ -47,20 +47,9 @@
   "query": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "QueryMsg",
-    "oneOf": [
-      {
-        "type": "object",
-        "required": [
-          "get_hash_list"
-        ],
-        "properties": {
-          "get_hash_list": {
-            "type": "object",
-            "additionalProperties": false
-          }
-        },
-        "additionalProperties": false
-      }
+    "type": "string",
+    "enum": [
+      "get_hash_list"
     ]
   },
   "migrate": null,

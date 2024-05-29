@@ -4,12 +4,10 @@ use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult}
 // use cw2::set_contract_version;
 
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
-use crate::state::{HASH_LIST, HashList};
 use crate::msg::HashListResponse;
+use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
+use crate::state::{HashList, HASH_LIST};
 use cosmwasm_std::to_json_binary;
-
-
 
 /*
 // version info for migration info
@@ -25,9 +23,7 @@ pub fn instantiate(
     _msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
     let res = Response::new().add_attribute("action", "instantiate");
-    let hash_list = HashList {
-        hashes: vec![],
-    };
+    let hash_list = HashList { hashes: vec![] };
     HASH_LIST.save(deps.storage, &hash_list)?;
     Ok(res)
 }
@@ -42,9 +38,8 @@ pub fn execute(
     match msg {
         ExecuteMsg::AddLEDHash { hash } => execute_add_led_hash(deps, env, info, hash),
         ExecuteMsg::ClearQueue => execute_clear_queue(deps, env, info),
-        ExecuteMsg::RemoveHash => execute_remove_hash(deps, env, info)
+        ExecuteMsg::RemoveHash => execute_remove_hash(deps, env, info),
     }
-
 }
 
 pub fn execute_add_led_hash(
@@ -105,14 +100,13 @@ pub fn query_hash_list(deps: Deps) -> StdResult<HashListResponse> {
     })
 }
 
-
 #[cfg(test)]
 mod tests {
 
     use super::*;
-    use cosmwasm_std::testing::{mock_dependencies, mock_env, mock_info};
     use crate::msg::HashListResponse;
     use crate::state::HashList;
+    use cosmwasm_std::testing::{mock_dependencies, mock_env, mock_info};
 
     #[test]
     fn test_query_hash_list() {
@@ -124,9 +118,12 @@ mod tests {
         HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
 
         let res = query_hash_list(deps.as_ref()).unwrap();
-        assert_eq!(res, HashListResponse {
-            hashes: vec![1, 2, 3, 4, 5],
-        });
+        assert_eq!(
+            res,
+            HashListResponse {
+                hashes: vec![1, 2, 3, 4, 5],
+            }
+        );
     }
 
     #[test]
@@ -169,9 +166,7 @@ mod tests {
         assert_eq!(res.attributes[0].key, "action");
         assert_eq!(res.attributes[0].value, "clear_queue");
 
-        let hash_list = HashList {
-            hashes: vec![],
-        };
+        let hash_list = HashList { hashes: vec![] };
         let res = HASH_LIST.load(deps.as_ref().storage).unwrap();
         assert_eq!(res, hash_list);
     }
@@ -198,5 +193,4 @@ mod tests {
         let res = HASH_LIST.load(deps.as_ref().storage).unwrap();
         assert_eq!(res, hash_list);
     }
-
 }

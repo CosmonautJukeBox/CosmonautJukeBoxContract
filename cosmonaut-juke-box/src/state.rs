@@ -1,4 +1,3 @@
-
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -24,7 +23,7 @@ mod tests {
     #[test]
     fn clear_list() {
         let mut state = HashList {
-            hashes: vec![1,2,3,4,5]
+            hashes: vec![1, 2, 3, 4, 5],
         };
 
         assert_eq!(5, state.hashes.len());
@@ -32,6 +31,5 @@ mod tests {
         state.clear();
 
         assert_eq!(0, state.hashes.len());
-
     }
 }
