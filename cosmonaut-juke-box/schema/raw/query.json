@@ -5,19 +5,6 @@
     {
       "type": "object",
       "required": [
-        "get_leds"
-      ],
-      "properties": {
-        "get_leds": {
-          "type": "object",
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false
-    },
-    {
-      "type": "object",
-      "required": [
         "get_hash_list"
       ],
       "properties": {

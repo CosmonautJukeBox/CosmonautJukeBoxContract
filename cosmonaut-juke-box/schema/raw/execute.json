@@ -5,85 +5,24 @@
     {
       "type": "string",
       "enum": [
-        "reset_leds"
+        "clear_queue"
       ]
     },
     {
       "type": "object",
       "required": [
-        "change_leds"
+        "add_led_hash"
       ],
       "properties": {
-        "change_leds": {
-          "type": "object",
-          "required": [
-            "blue",
-            "green",
-            "red"
-          ],
-          "properties": {
-            "blue": {
-              "type": "integer",
-              "format": "uint8",
-              "minimum": 0.0
-            },
-            "green": {
-              "type": "integer",
-              "format": "uint8",
-              "minimum": 0.0
-            },
-            "red": {
-              "type": "integer",
-              "format": "uint8",
-              "minimum": 0.0
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false
-    },
-    {
-      "type": "object",
-      "required": [
-        "change_led_hash"
-      ],
-      "properties": {
-        "change_led_hash": {
+        "add_led_hash": {
           "type": "object",
           "required": [
             "hash"
           ],
           "properties": {
             "hash": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "format": "uint32",
-                "minimum": 0.0
-              }
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false
-    },
-    {
-      "type": "object",
-      "required": [
-        "play_sound"
-      ],
-      "properties": {
-        "play_sound": {
-          "type": "object",
-          "required": [
-            "index"
-          ],
-          "properties": {
-            "index": {
               "type": "integer",
-              "format": "uint",
+              "format": "uint32",
               "minimum": 0.0
             }
           },

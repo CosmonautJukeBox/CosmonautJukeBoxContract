@@ -6,34 +6,19 @@ pub struct InstantiateMsg {}
 #[cw_serde]
 #[derive(cw_orch::ExecuteFns)]
 pub enum ExecuteMsg {
-    #[serde(rename = "change_leds")]
-    ChangeLEDs { red: u8, green: u8,blue: u8 },
-    #[serde(rename = "change_led_hash")]
-    ChangeLEDHash { hash: Vec<u32>},
-    #[serde(rename = "reset_leds")]
-    ResetLEDs,
-    PlaySound { index: usize }
+    #[serde(rename = "add_led_hash")]
+    AddLEDHash { hash: u32 },
+    #[serde(rename = "clear_queue")]
+    ClearQueue
 }
 
 #[cw_serde]
 #[derive(QueryResponses)]
 #[derive(cw_orch::QueryFns)]
 pub enum QueryMsg {
-    #[returns(LEDResponse)]
-    #[serde(rename = "get_leds")]
-    GetLEDs {},
     #[returns(HashListResponse)]
     #[serde(rename = "get_hash_list")]
     GetHashList {}
-}
-
-
-#[cw_serde]
-#[serde(rename = "led_response")]
-pub struct LEDResponse {
-    pub red: u8,
-    pub green: u8,
-    pub blue: u8
 }
 
 #[cw_serde]
