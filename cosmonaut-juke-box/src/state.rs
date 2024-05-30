@@ -1,11 +1,12 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use cosmwasm_std::Uint256;
 
 use cw_storage_plus::Item;
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Eq, JsonSchema, Debug, Default)]
 pub struct HashList {
-    pub hashes: Vec<u32>,
+    pub hashes: Vec<Uint256>,
 }
 
 impl HashList {
@@ -23,10 +24,17 @@ mod tests {
     #[test]
     fn clear_list() {
         let mut state = HashList {
-            hashes: vec![1, 2, 3, 4, 5],
+            hashes: vec![
+                Uint256::from_u128(1_u128), Uint256::from_u128(2_u128),
+                Uint256::from_u128(3_u128), Uint256::from_u128(4_u128), 
+                Uint256::from_u128(5_u128)
+            ],
         };
 
-        assert_eq!(5, state.hashes.len());
+        assert_eq!(
+            Uint256::from_u128(5_u128), 
+            Uint256::from_u128(u128::try_from(state.hashes.len()).unwrap())
+        );
 
         state.clear();
 

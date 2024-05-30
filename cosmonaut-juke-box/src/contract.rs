@@ -8,6 +8,7 @@ use crate::msg::HashListResponse;
 use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
 use crate::state::{HashList, HASH_LIST};
 use cosmwasm_std::to_json_binary;
+use cosmwasm_std::Uint256;
 
 /*
 // version info for migration info
@@ -46,7 +47,7 @@ pub fn execute_add_led_hash(
     deps: DepsMut,
     _env: Env,
     _info: MessageInfo,
-    hash: u32,
+    hash: Uint256,
 ) -> Result<Response, ContractError> {
     const MAX_LENGTH: usize = 10;
 
@@ -115,7 +116,11 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let hash_list = HashList {
-            hashes: vec![1, 2, 3, 4, 5],
+            hashes: vec![
+                Uint256::from_u128(1_u128), Uint256::from_u128(2_u128),
+                Uint256::from_u128(3_u128), Uint256::from_u128(4_u128), 
+                Uint256::from_u128(5_u128)
+                ],
         };
         HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
 
@@ -123,7 +128,11 @@ mod tests {
         assert_eq!(
             res,
             HashListResponse {
-                hashes: vec![1, 2, 3, 4, 5],
+                hashes: vec![
+                    Uint256::from_u128(1_u128), Uint256::from_u128(2_u128),
+                    Uint256::from_u128(3_u128), Uint256::from_u128(4_u128), 
+                    Uint256::from_u128(5_u128)
+                ]
             }
         );
     }
@@ -133,12 +142,16 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let hash_list = HashList {
-            hashes: vec![1, 2, 3, 4, 5],
+            hashes: vec![
+                Uint256::from_u128(1_u128), Uint256::from_u128(2_u128),
+                Uint256::from_u128(3_u128), Uint256::from_u128(4_u128), 
+                Uint256::from_u128(5_u128)
+            ],
         };
         HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
 
         let info = mock_info("creator", &[]);
-        let hash = 6;
+        let hash = Uint256::from_u128(6_u128);
 
         let res = execute_add_led_hash(deps.as_mut(), mock_env(), info, hash).unwrap();
         assert_eq!(res.attributes.len(), 1);
@@ -146,7 +159,11 @@ mod tests {
         assert_eq!(res.attributes[0].value, "add_led_hash");
 
         let hash_list = HashList {
-            hashes: vec![1, 2, 3, 4, 5, 6],
+            hashes: vec![
+                Uint256::from_u128(1_u128), Uint256::from_u128(2_u128),
+                Uint256::from_u128(3_u128), Uint256::from_u128(4_u128), 
+                Uint256::from_u128(5_u128), Uint256::from_u128(6_u128)
+            ],
         };
         let res = HASH_LIST.load(deps.as_ref().storage).unwrap();
         assert_eq!(res, hash_list);
@@ -157,7 +174,11 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let hash_list = HashList {
-            hashes: vec![1, 2, 3, 4, 5],
+            hashes: vec![
+                Uint256::from_u128(1_u128), Uint256::from_u128(2_u128),
+                Uint256::from_u128(3_u128), Uint256::from_u128(4_u128), 
+                Uint256::from_u128(5_u128)
+            ],
         };
         HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
 
@@ -178,7 +199,11 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let hash_list = HashList {
-            hashes: vec![1, 2, 3, 4, 5],
+            hashes: vec![
+                Uint256::from_u128(1_u128), Uint256::from_u128(2_u128),
+                Uint256::from_u128(3_u128), Uint256::from_u128(4_u128), 
+                Uint256::from_u128(5_u128)
+            ],
         };
         HASH_LIST.save(&mut deps.storage, &hash_list).unwrap();
 
@@ -190,7 +215,11 @@ mod tests {
         assert_eq!(res.attributes[0].value, "remove_hash");
 
         let hash_list = HashList {
-            hashes: vec![2, 3, 4, 5],
+            hashes: vec![
+                Uint256::from_u128(2_u128),
+                Uint256::from_u128(3_u128), Uint256::from_u128(4_u128), 
+                Uint256::from_u128(5_u128)
+            ],
         };
         let res = HASH_LIST.load(deps.as_ref().storage).unwrap();
         assert_eq!(res, hash_list);
